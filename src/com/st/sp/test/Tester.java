@@ -4,10 +4,13 @@ import com.st.sp.api.Caculater;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
 
 public class Tester {
     ApplicationContext ioc = new ClassPathXmlApplicationContext("classpath:/conf/applicationContext.xml");
-    @Test
+   // @Test
     public void test(){
 
         Caculater caculater = (Caculater)ioc.getBean(Caculater.class);
@@ -15,7 +18,7 @@ public class Tester {
         caculater.min(10,6);
         caculater.multi(10,6);
         caculater.div(2,1);
-        caculater.div(2,0);
+        //caculater.div(2,0);
 
 //        执行结果如下:
 //        add方法开始运行,参数是[1, 2]
@@ -49,5 +52,15 @@ public class Tester {
 //                div方法结束
 //        div方法正常运行完成,参数是[2, 0],结果是:null    这里为null 是因为 异常被捕获了
 
+    }
+
+    @Test
+    public void test02(){
+        //测试装配数据源 和 jdbcTemplate  操作数据库
+        JdbcTemplate jdbcTemplate = ioc.getBean(JdbcTemplate.class);
+        String sql = "insert into user(id,name) values('11we3022an','xiaoming')";
+        jdbcTemplate.execute(sql);
+        //System.out.println(jdbcTemplate);
+        //org.springframework.jdbc.core.JdbcTemplate@2235eaab
     }
 }
