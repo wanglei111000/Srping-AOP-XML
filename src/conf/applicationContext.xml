@@ -4,10 +4,12 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 <!-- 测试aop 基于xml配置 -->
@@ -56,6 +58,14 @@
         <property name="jdbcUrl" value="${jdbc.url}"></property>
         <property name="driverClass" value="${jdbc.driverClass}"></property>
     </bean>
+
+    <!-- 配置事务管理器  -->
+    <bean name="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 控制的数据源 -->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!-- 开启居于注解的事务模式,依赖tx 名称空间 transaction-manager 参数需要上一步中的 事务管理器的名称 -->
+    <tx:annotation-driven transaction-manager="tm"/>
  <!-- 配置JdbcTemplete -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <!-- 指定构造器所需的参数 即数据源 名称和bean对象 -->
