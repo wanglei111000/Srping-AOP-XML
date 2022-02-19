@@ -28,14 +28,28 @@ public class BookService {
 //noRollbackForClassName() 哪些异常不回滚  使用全类名
 //  例如 : @Transactional(rollbackFor = {ArithmeticException.class})
 
-// Propagation.REQUIRED;  传播行为 的可选值
-//    REQUIRED(0),
-//    SUPPORTS(1),
-//    MANDATORY(2),
-//    REQUIRES_NEW(3),
-//    NOT_SUPPORTED(4),
-//    NEVER(5),
-//    NESTED(6);
+// Propagation.REQUIRED;  传播+行为 的可选值(多个事务进行嵌套的时候使用)
+                          // 内部事务是否会和外部事物公用
+//    控制这种事务是否需要回滚当其中的某一个方法失败的时候
+//    AService{
+//        tx_1(){
+//            tx_2(){} ;
+//            tx_3(){} ;
+//        }
+//    }
+
+
+//    REQUIRED(0),   //如果已经存在事务,当前方法就在这个事务内执行，不存在已有的事务
+                     //则新建一个事务，并在自己的事务内部运行
+
+//    REQUIRES_NEW(3),  //当前方法必须启动新事物,并在自己的事务内部执行,如果有事务在运行，需要被挂起
+
+//    SUPPORTS(1),    //如果有事务在运行，当前方法就在这个事务中运行，否则它就可以不运行在事务中
+//    NOT_SUPPORTED(4),// 当前方法不应该运行在事务中，如果有运行的事务 将它挂起
+//    MANDATORY(2),   //当前方法必须运行在事务内部，如果没有正在运行的事务，抛出异常
+//    NEVER(5),       //当前方法不能运行在事务中，如果有运行的事务，会报异常
+//    NESTED(6);       //如果有事务运行，当前方法在这个事务嵌套的事务内部运行，否则启动一个新得
+    //事务，在新的事物内部运行
 
     //  隔离级别    根据业务特性设置
 //    DEFAULT(-1),
